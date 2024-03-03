@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/popover"
 
 import AddTodo from "../add-todo"
+import NoRecords from "../no-records"
 import { Button } from "./button"
 import Loading from "./loading"
 import TodoForm from "./todo-form"
@@ -56,7 +57,7 @@ const TodoList = () => {
    */
   const getAllTodoList = async () => {
     const data = await GET_DATA("/api/todo")
-    if (data.length > 0) {
+    if (data) {
       const sortData = data.reverse().sort((a, b) => a.status - b.status)
       setTodoList(sortData)
     }
@@ -123,9 +124,10 @@ const TodoList = () => {
 
   return (
     <div className="container flex h-full w-screen flex-col items-center justify-center">
-      <div className="flex w-full flex-col">
+      <div className="flex w-full flex-col h-full relative">
         <AddTodo handleSubmit={() => getAllTodoList()} />
-        <ul className="mt-[1.5rem] flex flex-col gap-4 transition duration-500 ease-in-out">
+        {todoList.length === 0 && <NoRecords />}
+        <ul className="mt-[1.5rem] flex flex-col gap-4 transition duration-500 ease-in-out h-full">
           {todoList.map((item) => {
             const isActive = selectedItem.id === item.id
             return (
@@ -139,7 +141,6 @@ const TodoList = () => {
                       item.status === TodoListStatusEnum.COMPLETED
                     }
                     onCheckedChange={(e) => {
-                      setSelectedItem(item)
                       updateStatus(item, e)
                     }}
                   />
