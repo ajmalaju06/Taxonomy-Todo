@@ -134,12 +134,14 @@ const TodoList = () => {
                 key={item.id}
               >
                 <div className="flex items-center flex-1 gap-4">
-                  {isActive && isLoading && <Loading />}
                   <Checkbox
                     defaultChecked={
                       item.status === TodoListStatusEnum.COMPLETED
                     }
-                    onCheckedChange={(e) => updateStatus(item, e)}
+                    onCheckedChange={(e) => {
+                      setSelectedItem(item)
+                      updateStatus(item, e)
+                    }}
                   />
                   <span
                     className={`flex-1 ${
