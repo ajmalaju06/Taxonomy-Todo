@@ -7,6 +7,7 @@ import {
   TodoListStatusEnum,
 } from "@/models/TodoList.interface"
 import { CheckedState } from "@radix-ui/react-checkbox"
+import { useTheme } from "next-themes"
 
 import useRequest from "@/hooks/use-request"
 import { Card } from "@/components/ui/card"
@@ -20,7 +21,6 @@ import {
 import AddTodo from "../add-todo"
 import NoRecords from "../no-records"
 import { Button } from "./button"
-import Loading from "./loading"
 import TodoForm from "./todo-form"
 
 const INITIAL: TodoListItemState = {
@@ -38,6 +38,8 @@ const TodoList = () => {
 
   const { GET_DATA, PATCH_DATA, PUT_DATA, DELETE_DATA } = useRequest()
   const router = useRouter()
+  const { theme } = useTheme()
+  const isDark = theme === "dark"
 
   /**
    * Closing Delete popover
@@ -157,7 +159,9 @@ const TodoList = () => {
 
                 {item.status === TodoListStatusEnum.PENDING && (
                   <div
-                    className={`w-[90px] h-6 flex bg-[#27384b] rounded-full px-2 items-center gap-1 border-[0.5px solid gray]`}
+                    className={`w-[90px] h-6 flex ${
+                      isDark ? "bg-[#27384b]" : "bg-gray-200"
+                    } rounded-full px-2 items-center gap-1 border-[0.5px solid gray]`}
                   >
                     <svg
                       width="15"
@@ -168,7 +172,7 @@ const TodoList = () => {
                     >
                       <path
                         d="M0.877075 7.49991C0.877075 3.84222 3.84222 0.877075 7.49991 0.877075C11.1576 0.877075 14.1227 3.84222 14.1227 7.49991C14.1227 11.1576 11.1576 14.1227 7.49991 14.1227C3.84222 14.1227 0.877075 11.1576 0.877075 7.49991ZM7.49991 1.82708C4.36689 1.82708 1.82708 4.36689 1.82708 7.49991C1.82708 10.6329 4.36689 13.1727 7.49991 13.1727C10.6329 13.1727 13.1727 10.6329 13.1727 7.49991C13.1727 4.36689 10.6329 1.82708 7.49991 1.82708Z"
-                        fill="white"
+                        fill="currentColor"
                         fillRule="evenodd"
                         clipRule="evenodd"
                       ></path>
