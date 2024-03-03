@@ -1,7 +1,6 @@
 import { z } from "zod"
 
 import { db } from "@/lib/db"
-import { RequiresProPlanError } from "@/lib/exceptions"
 
 const postCreateSchema = z.object({
   todoName: z.string(),
